@@ -1,0 +1,21 @@
+h3 {
+  margin: 20px;
+  color: #003366;
+  font-size: 18px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.cliente-grid {
+  display: grid;
+  margin: 20px;
+  gap: 20px;
+  grid-template-columns: repeat(2, 2fr);
+}
+
+label {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 5px;
+}
+
