@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AppInputComponent } from '../app-input/app-input.component';
 import { DadosCliente } from '../../../models/cliente.model';
 
@@ -12,9 +12,6 @@ import { DadosCliente } from '../../../models/cliente.model';
   styleUrl: './formulario-cliente.component.scss'
 })
 export class FormularioClienteComponent {
-  cliente: DadosCliente;
+  @Input() cliente!: DadosCliente;
 
-  constructor() {
-    this.cliente = new DadosCliente();
-  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AppInputComponent } from '../app-input/app-input.component';
 import { DadosAparelho } from '../../../models/aparelho.model';
 
@@ -12,9 +12,6 @@ import { DadosAparelho } from '../../../models/aparelho.model';
   styleUrl: './formulario-aparelho.component.scss'
 })
 export class FormularioAparelhoComponent {
-  aparelho: DadosAparelho;
-
-  constructor() {
-    this.aparelho = new DadosAparelho();
-  }
+  @Input() aparelho!: DadosAparelho;
+  
 }

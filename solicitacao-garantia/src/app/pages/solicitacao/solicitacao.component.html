@@ -1,5 +1,5 @@
-<div id="container">
-    <app-formulario-cliente/>
-    <app-formulario-aparelho/>
+<div id="solicitacao">
+    <app-formulario-cliente [cliente]="cliente"/>
+    <app-formulario-aparelho [aparelho]="aparelho"/>
     <app-button (clickButton)="enviarSolicitacao()"></app-button>
 </div>

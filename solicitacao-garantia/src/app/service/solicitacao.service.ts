@@ -14,22 +14,24 @@ export class SolicitacaoService {
 
   enviarSolicitacao(cliente: DadosCliente, aparelho: DadosAparelho): Observable<any> {
     const payload = {
-      beneficioSolicitado: {
-        type: 'Json',
-        value: JSON.stringify({
-          nome: cliente.nome,
-          cpf: cliente.cpf,
-          dataNascimento: cliente.dataNascimento,
-          celular: { ddd: cliente.celular.substring(0, 2), numero: cliente.celular.substring(2) },
-          infoAparelho: {
-            marca: aparelho.marca,
-            modelo: aparelho.modelo,
-            notaFiscal: aparelho.notaFiscal,
-            dataCompra: aparelho.dataCompra,
-            tipoDefeito: aparelho.tipoDefeito,
-            descricao: aparelho.descricao
-          }
-        })
+      variables: {
+        beneficioSolicitado: {
+          value: JSON.stringify({
+            nome: cliente.nome,
+            cpf: cliente.cpf,
+            dataNascimento: cliente.dataNascimento,
+            celular: { ddd: cliente.celular.substring(0, 2), numero: cliente.celular.substring(2) },
+            infoAparelho: {
+              marca: aparelho.marca,
+              modelo: aparelho.modelo,
+              notaFiscal: aparelho.notaFiscal,
+              dataCompra: aparelho.dataCompra,
+              tipoDefeito: aparelho.tipoDefeito,
+              descricao: aparelho.descricao
+            }
+          }),
+          type: 'Json'
+        }
       }
     };
 
