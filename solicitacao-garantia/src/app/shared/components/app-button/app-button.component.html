@@ -1,3 +1,5 @@
-<div id="form-button">
-  <button class="button" (click)="clickButton.emit()">Enviar</button>
+<div>
+  <button [class]="customClass" (click)="onClick()">
+    {{ label }}
+  </button>
 </div>
