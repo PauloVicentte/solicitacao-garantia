@@ -5,30 +5,30 @@
   </div>
 
   <ul class="menu">
-    <li>
-      <span class="icon">🏠︎</span>
-      <span class="text" *ngIf="isOpen">Início</span>
+    <li [routerLink]="['/home']">
+      <span class="icon" >🏠︎</span>
+      <span class="text" *ngIf="isOpen">Home</span>
     </li>
-    <li>
+    <li [routerLink]="['/solicitacao']">
       <span class="icon">✚</span>
       <span class="text" *ngIf="isOpen">Solicitar Garantia</span>
     </li>
-    <li>
+    <li [routerLink]="['/acompanhar-solicitacao']">
       <span class="icon">🖊️</span>
       <span class="text" *ngIf="isOpen">Suas Solicitações</span>
     </li>
     <li class="user">
       <span class="icon">👤</span>
       <span class="text" *ngIf="isOpen">
-        {{user.name}} <br>
-        <small>{{user.role}}</small>
+        {{user.nome}} <br>
+        <small>Solicitante</small>
       </span>
     </li>
     <li>
       <span class="icon">🌗</span>
       <span class="text" *ngIf="isOpen">Modo Escuro</span>
     </li>
-    <li>
+    <li [routerLink]="['/login']">
       <span class="icon">↪</span>
       <span class="text" *ngIf="isOpen">Sair</span>
     </li>

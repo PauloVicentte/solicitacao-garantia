@@ -1,5 +1,86 @@
-<div id="solicitacao">
-    <app-formulario-cliente [cliente]="cliente"/>
-    <app-formulario-aparelho [aparelho]="aparelho"/>
-    <app-button (clickButton)="enviarSolicitacao()"></app-button>
+<div class="solicitacao-container">
+    <app-sidebar></app-sidebar>
+
+    <div class="solicitacao-content">
+        <div class="panel">
+            <div class="welcome">
+                <h2>Solicitação de Suporte</h2>
+            </div>
+
+            <div class="form-container">
+                <p class="subtitle">Preencha os campos para Solicitação de Suporte</p>
+                <hr />
+
+                <form class="support-form">
+
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <span id="nome">{{user.nome}}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <span id="cpf">{{user.cpf}}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Data de Nascimento</label>
+                        <span id="nascimento">{{user.dataNascimento}}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Celular</label>
+                        <span id="celular">{{user.celular}}</span>
+                    </div>
+
+                    <form class="support-form" [formGroup]="solicitacaoForm" (ngSubmit)="enviarSolicitacao()">
+                        <div class="form-group">
+                            <label>Marca *</label>
+                            <select formControlName="marca" required>
+                                <option value="">Selecione</option>
+                                <option value="samsung">Samsung</option>
+                                <option value="lg">LG</option>
+                                <option value="apple">Apple</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Modelo *</label>
+                            <input type="text" formControlName="modelo" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nota Fiscal *</label>
+                            <input type="text" formControlName="notaFiscal" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Data da Compra *</label>
+                            <input type="date" formControlName="dataCompra" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo de Defeito *</label>
+                            <select formControlName="tipoDefeito" required>
+                                <option value="">Selecione</option>
+                                <option value="tela">Tela quebrada</option>
+                                <option value="bateria">Problema na bateria</option>
+                                <option value="sistema">Sistema travando</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descrição *</label>
+                            <textarea rows="4" formControlName="descricao" required></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-enviar">Enviar</button>
+                        </div>
+                    </form>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,41 +1,50 @@
 <div class="acompanhamento-solicitacao">
+  <app-sidebar></app-sidebar>
 
-  <section>
-    <h2>Solicitações em Andamento</h2>
-    <div *ngFor="let s of emAndamento" class="card">
-      <p>Status: {{ s.status }}</p>
-      <p>Etapa Atual: {{ s.etapaAtual }}</p>
-      <button (click)="verDetalhes(s)">Ver dados do cliente</button>
+  <section class="acompanhament-content">
+    <div class="welcome">
+      <h2>Suas Solicitações</h2>
     </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome do Solicitante</th>
+          <th>Data da Solicitação</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of solicitacoes">
+          <td>{{ s.id }}</td>
+          <td>{{ s.nome }}</td>
+          <td>{{ s.data }}</td>
+          <td>
+            <span class="status" [ngClass]="{
+              'amarelo': s.status === 'Em análise',
+              'verde': s.status === 'Aprovado',
+              'vermelho': s.status === 'Negado'
+            }">
+              {{ s.status }}
+            </span>
+          </td>
+          <td>
+            <button (click)="verDetalhes(s)">👁</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
-  <section>
-    <h2>Solicitações Aprovadas</h2>
-    <div *ngFor="let s of aprovadas" class="card">
-      <p>Status: {{ s.status }}</p>
-      <p>Data de Entrega: {{ s.dataEntrega }}</p>
-      <button (click)="verDetalhes(s)">Ver dados do cliente</button>
-      <button (click)="selecionarNovoAparelho(s)">Selecionar novo aparelho / reparo</button>
+  <div class="modal" *ngIf="modalAberto">
+    <div class="modal-content">
+      <h3>Dados do Cliente</h3>
+      <p>Nome: {{ clienteSelecionado?.nome }}</p>
+      <p>CPF: {{ clienteSelecionado?.cpf }}</p>
+      <p>Celular: {{ clienteSelecionado?.celular }}</p>
+      <button (click)="fecharModal()">Fechar</button>
     </div>
-  </section>
-
-  <section>
-    <h2>Solicitações Negadas</h2>
-    <div *ngFor="let s of negadas" class="card">
-      <p>Status: {{ s.status }}</p>
-      <p>Causa: {{ s.causaNegativa }}</p>
-      <button (click)="verDetalhes(s)">Ver dados do cliente</button>
-    </div>
-  </section>
-
-</div>
-
-<div class="modal" *ngIf="modalAberto">
-  <div class="modal-content">
-    <h3>Dados do Cliente</h3>
-    <p>Nome: {{ clienteSelecionado.nome }}</p>
-    <p>CPF: {{ clienteSelecionado.cpf }}</p>
-    <p>Celular: {{ clienteSelecionado.celular }}</p>
-    <button (click)="fecharModal()">Fechar</button>
   </div>
 </div>

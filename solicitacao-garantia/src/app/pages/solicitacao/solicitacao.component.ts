@@ -1,31 +1,49 @@
 import { Component } from '@angular/core';
-import { FormularioClienteComponent } from "../../shared/components/formulario-cliente/formulario-cliente.component";
-import { FormularioAparelhoComponent } from "../../shared/components/formulario-aparelho/formulario-aparelho.component";
-import { AppButtonComponent } from "../../shared/components/app-button/app-button.component";
-import { DadosCliente } from '../../models/cliente.model';
 import { DadosAparelho } from '../../models/aparelho.model';
 import { SolicitacaoService } from '../../service/solicitacao.service';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-solicitacao',
   standalone: true,
   imports: [
-    FormularioClienteComponent,
-    FormularioAparelhoComponent,
-    AppButtonComponent,
-
+    SidebarComponent,
+    CommonModule,
+    ReactiveFormsModule
   ],
   templateUrl: './solicitacao.component.html',
-  styleUrl: './solicitacao.component.scss'
+  styleUrls: ['./solicitacao.component.scss']
 })
 export class SolicitacaoComponent {
-  cliente: DadosCliente = new DadosCliente();
-  aparelho: DadosAparelho = new DadosAparelho();
+  solicitacaoForm;
 
-  constructor(private solicitacaoService: SolicitacaoService) {}
+  user = JSON.parse(localStorage.getItem('user') || 'null');
+
+  constructor(
+    private fb: FormBuilder,
+    private solicitacaoService: SolicitacaoService
+  ) {
+    this.solicitacaoForm = this.fb.group({
+      marca: ['', Validators.required],
+      modelo: ['', Validators.required],
+      notaFiscal: ['', Validators.required],
+      dataCompra: ['', Validators.required],
+      tipoDefeito: ['', Validators.required],
+      descricao: ['', Validators.required]
+    });
+  }
 
   enviarSolicitacao() {
-    this.solicitacaoService.enviarSolicitacao(this.cliente, this.aparelho)
+    if (this.solicitacaoForm.invalid) {
+      console.warn('Formulário inválido');
+      return;
+    }
+
+    const aparelho: DadosAparelho = this.solicitacaoForm.value as DadosAparelho;
+
+    this.solicitacaoService.enviarSolicitacao(this.user, aparelho)
       .subscribe({
         next: res => console.log('Solicitação enviada com sucesso', res),
         error: err => console.error('Erro ao enviar solicitação', err)

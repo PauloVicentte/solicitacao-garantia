@@ -1,0 +1,100 @@
+.solicitacao-container {
+  display: flex;
+  height: 100dvh;
+  background: #f3f4f6;
+}
+
+.solicitacao-content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+}
+
+.form-container {
+  padding: 24px;
+  flex: 1;
+}
+
+.subtitle {
+  text-align: center;
+  margin: 8px 0 16px;
+  color: #4b5563;
+}
+
+.welcome h2 {
+  background: #1e3a8a;
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 16px 16px 0 0;
+  margin: 0;
+  text-align: center;
+}
+
+.panel {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.form-group span {
+  font-size: 14px;
+  color: #111827;
+}
+
+input, select, textarea {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.btn-cancelar {
+  background: #6b7280;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.btn-cancelar:hover { background: #4b5563; }
+
+.btn-enviar {
+  background: #1e3a8a;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.btn-enviar:hover { background: #2563eb; }

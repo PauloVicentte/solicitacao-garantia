@@ -12,15 +12,15 @@ export class SolicitacaoService {
 
   constructor(private http: HttpClient) { }
 
-  enviarSolicitacao(cliente: DadosCliente, aparelho: DadosAparelho): Observable<any> {
+  enviarSolicitacao(user: any, aparelho: DadosAparelho): Observable<any> {
     const payload = {
       variables: {
         beneficioSolicitado: {
           value: JSON.stringify({
-            nome: cliente.nome,
-            cpf: cliente.cpf,
-            dataNascimento: cliente.dataNascimento,
-            celular: { ddd: cliente.celular.substring(0, 2), numero: cliente.celular.substring(2) },
+            nome: user.nome,
+            cpf: user.cpf,
+            dataNascimento: user.dataNascimento,
+            celular: user.celular?.substring(2),
             infoAparelho: {
               marca: aparelho.marca,
               modelo: aparelho.modelo,

@@ -12,13 +12,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class SidebarComponent {
   isOpen = true;
+  user = JSON.parse(localStorage.getItem('user') || 'null');
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
-
-  user = {
-    name: 'Breno L.',
-    role: 'Solicitante'
-  };
 }

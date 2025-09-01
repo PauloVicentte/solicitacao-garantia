@@ -1,43 +1,56 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
+import { HttpClient } from '@angular/common/http';
 
 interface Solicitacao {
-  cliente: any;
-  status: 'Em Andamento' | 'Aprovado' | 'Negado';
-  etapaAtual?: string;
-  dataEntrega?: string;
-  causaNegativa?: string;
+  id: string;
+  nome: string;
+  data: string;
+  status: 'Em análise' | 'Aprovado' | 'Negado';
+  cliente: {
+    nome: string;
+    cpf: string;
+    celular: string;
+  };
 }
 
 @Component({
   selector: 'app-acompanhar-solicitacao',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './acompanhar-solicitacao.component.html',
-  styleUrl: './acompanhar-solicitacao.component.scss'
+  styleUrls: ['./acompanhar-solicitacao.component.scss']
 })
 export class AcompanharSolicitacaoComponent {
-  emAndamento: Solicitacao[] = [];
-  aprovadas: Solicitacao[] = [];
-  negadas: Solicitacao[] = [];
-
+  solicitacoes: Solicitacao[] = [];
+  user = JSON.parse(localStorage.getItem('user') || 'null');
   modalAberto: boolean = false;
   clienteSelecionado: any = null;
+
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.carregarSolicitacoes();
   }
 
   carregarSolicitacoes() {
-    this.emAndamento = [
-      { cliente: { nome: 'Paulo', cpf: '123.456.789-00', celular: '21999999999' }, status: 'Em Andamento', etapaAtual: 'Validar informações do cliente' }
-    ];
-    this.aprovadas = [
-      { cliente: { nome: 'Maria', cpf: '987.654.321-00', celular: '21988888888' }, status: 'Aprovado', dataEntrega: '2025-09-05' }
-    ];
-    this.negadas = [
-      { cliente: { nome: 'João', cpf: '111.222.333-44', celular: '21977777777' }, status: 'Negado', causaNegativa: 'Dados incompletos' }
-    ];
+    this.http.get<any[]>('/engine-rest/history/process-instance')
+      .subscribe(instances => {
+        instances.forEach(pi => {
+          this.http.get<any[]>(`/engine-rest/history/variable-instance?processInstanceId=${pi.id}&variableName=status`)
+            .subscribe(vars => {
+              const status = vars[0]?.value || 'Em análise';
+              this.solicitacoes.push({
+                id: pi.id,
+                nome: this.user.nome,
+                data: pi.startTime,
+                status,
+                cliente: { nome: '', cpf: '', celular: '' }
+              });
+            });
+        });
+      });
   }
 
   verDetalhes(solicitacao: Solicitacao) {
@@ -48,9 +61,5 @@ export class AcompanharSolicitacaoComponent {
   fecharModal() {
     this.modalAberto = false;
     this.clienteSelecionado = null;
-  }
-
-  selecionarNovoAparelho(solicitacao: Solicitacao) {
-    alert('Ação para selecionar novo aparelho ou reparo');
   }
 }

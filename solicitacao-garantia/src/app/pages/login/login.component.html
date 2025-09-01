@@ -1,43 +1,52 @@
 <div class="login">
-    <div class="login-illustration">
-        <img src="src/assets/login.jpg" alt="Logo">
-    </div>
+  <div class="login-illustration">
+    <img src="src/assets/login.jpg" alt="Logo">
+  </div>
 
-    <div class="login-form-wrapper">
-        <div class="login-box">
+  <div class="login-form-wrapper">
+    <div class="login-box">
 
-            <div class="login-header">
-                <img src="assets/logo.png" alt="Logo" class="logo">
-                <h1>SSG</h1>
-                <p>Sistema de Solicitação de Garantia</p>
-            </div>
+      <div class="login-header">
+        <img src="assets/logo.png" alt="Logo" class="logo">
+        <h1>SSG</h1>
+        <p>Sistema de Solicitação de Garantia</p>
+      </div>
 
-            <form class="form-container" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form class="form-container" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input id="email" type="email" formControlName="email" placeholder="email@gmail.com" />
-                </div>
-
-                <div class="form-group">
-                    <label for="senha">Senha</label>
-                    <div class="password-wrapper">
-                        <input id="senha" [type]="hidePassword() ? 'password' : 'text'" formControlName="senha"
-                            placeholder="Digite sua senha" />
-                        <button type="button" (click)="togglePassword()" class="toggle-password">
-                            <span *ngIf="hidePassword()">👁️</span>
-                            <span *ngIf="!hidePassword()">🙈</span>
-                        </button>
-                    </div>
-                </div>
-
-                <app-button label="Entrar" customClass="btn-login" type="submit" (clickButton)="onSubmit()">
-                </app-button>
-            </form>
-
-            <div class="forgot-password">
-                <a href="#">Esqueci minha senha</a>
-            </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" formControlName="email" placeholder="email@gmail.com" />
         </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <div class="password-wrapper">
+            <input id="senha" [type]="hidePassword() ? 'password' : 'text'" formControlName="senha"
+              placeholder="Digite sua senha" />
+            <button type="button" (click)="togglePassword()" class="toggle-password">
+              <span *ngIf="hidePassword()">👁️</span>
+              <span *ngIf="!hidePassword()">🙈</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login">
+          Entrar
+        </button>
+      </form>
+
+      <div class="forgot-password">
+        <a href="#">Esqueci minha senha</a>
+      </div>
+
+      <app-modal
+        [show]="modalData.show"
+        [title]="modalData.title"
+        [message]="modalData.message"
+        [color]="modalData.color"
+        (close)="closeModal()">
+      </app-modal>
     </div>
+  </div>
 </div>

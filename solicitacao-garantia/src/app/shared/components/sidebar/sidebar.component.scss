@@ -1,9 +1,11 @@
 .sidebar {
-  width: 72px;
+  margin: 10px;
+  border-radius: 20px;
   background: #fff;
   height: 100vh;
   border-right: 1px solid #e5e7eb;
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
   transition: width 0.3s ease;
   overflow: hidden;
@@ -78,6 +80,10 @@
 
     li:nth-last-child(2) {
       margin-top: auto;
+    }
+
+    .user{
+      background-color: #8baaff;
     }
   }
 }
