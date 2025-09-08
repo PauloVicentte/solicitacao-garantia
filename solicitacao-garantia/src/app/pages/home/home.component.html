@@ -1,15 +1,17 @@
-<div class="home-container">
-  <app-sidebar></app-sidebar>
+<div class="layout" [class.sidebar-collapsed]="!sidebar.isOpen">
+  <div class="home-container">
+    <app-sidebar #sidebar></app-sidebar>
 
-  <div class="home-content">
-    <div class="panel">
-      <div class="welcome">
-        <h2>Bem-vindo(a) {{user.nome}}!</h2>
-      </div>
+    <div class="home-content">
+      <div class="panel">
+        <div class="welcome">
+          <h2>Bem-vindo(a) {{user.nome}}!</h2>
+        </div>
 
-      <div class="buttons">
-        <button class="btn-home" [routerLink]="['/solicitacao']">Solicitar Garantia</button>
-        <button class="btn-home" [routerLink]="['/acompanhar-solicitacao']">Suas Solicitações</button>
+        <div class="buttons">
+          <button class="btn-home" [routerLink]="['/solicitacao']">Solicitar Garantia</button>
+          <button class="btn-home" [routerLink]="['/acompanhar-solicitacao']">Suas Solicitações</button>
+        </div>
       </div>
     </div>
   </div>

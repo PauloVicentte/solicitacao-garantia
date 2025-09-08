@@ -26,14 +26,5 @@ export const USERS: User[] = [
     cpf: '987.654.321-00',
     celular: '(21) 98888-2222',
     genero: 'Feminino'
-  },
-  {
-    email: 'joao@gmail.com',
-    senha: 'abc123',
-    nome: 'João Pereira',
-    dataNascimento: '10/09/1992',
-    cpf: '111.222.333-44',
-    celular: '(31) 97777-3333',
-    genero: 'Masculino'
   }
 ];

@@ -1,86 +1,107 @@
-<div class="solicitacao-container">
-    <app-sidebar></app-sidebar>
-
-    <div class="solicitacao-content">
-        <div class="panel">
-            <div class="welcome">
-                <h2>Solicitação de Suporte</h2>
-            </div>
-
-            <div class="form-container">
-                <p class="subtitle">Preencha os campos para Solicitação de Suporte</p>
-                <hr />
-
-                <form class="support-form">
-
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <span id="nome">{{user.nome}}</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>CPF</label>
-                        <span id="cpf">{{user.cpf}}</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Data de Nascimento</label>
-                        <span id="nascimento">{{user.dataNascimento}}</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Celular</label>
-                        <span id="celular">{{user.celular}}</span>
-                    </div>
-
+<div class="layout" [class.sidebar-collapsed]="!sidebar.isOpen">
+    <div class="solicitacao-container">
+        <app-sidebar #sidebar></app-sidebar>
+        <div class="solicitacao-content">
+            <div class="panel">
+                <div class="welcome">
+                    <h2>Solicitação de Suporte</h2>
+                </div>
+                <div class="form-container">
+                    <p class="subtitle">Preencha os campos para Solicitação de Garantia</p>
+                    <hr />
                     <form class="support-form" [formGroup]="solicitacaoForm" (ngSubmit)="enviarSolicitacao()">
+                        <!-- Dados do usuário -->
+                        <div class="form-group"> <label>Nome</label> <span id="nome">{{ user.nome }}</span> </div>
+                        <div class="form-group"> <label>CPF</label> <span id="cpf">{{ user.cpf }}</span> </div>
+                        <div class="form-group"> <label>Data de Nascimento</label> <span id="nascimento">{{
+                                user.dataNascimento }}</span> </div>
+                        <div class="form-group"> <label>Celular</label> <span id="celular">{{ user.celular }}</span>
+                        </div>
+
+                        <!-- Marca -->
                         <div class="form-group">
                             <label>Marca *</label>
-                            <select formControlName="marca" required>
+                            <select formControlName="marca" (change)="atualizarModelos()">
                                 <option value="">Selecione</option>
                                 <option value="samsung">Samsung</option>
                                 <option value="lg">LG</option>
                                 <option value="apple">Apple</option>
                             </select>
+                            <small class="error" *ngIf="campoInvalido('marca')">Selecione a marca.</small>
                         </div>
 
+                        <!-- Modelo -->
                         <div class="form-group">
                             <label>Modelo *</label>
-                            <input type="text" formControlName="modelo" required />
+                            <select formControlName="modelo" [disabled]="modelosDisponiveis.length === 0">
+                                <option value="">Selecione</option>
+                                <option *ngFor="let m of modelosDisponiveis" [value]="m">{{ m }}</option>
+                            </select>
+                            <small class="info" *ngIf="modelosDisponiveis.length === 0">
+                                Selecione uma marca primeiro
+                            </small>
+                            <small class="error" *ngIf="campoInvalido('modelo') && modelosDisponiveis.length > 0">
+                                Selecione o modelo.
+                            </small>
                         </div>
 
+                        <!-- Nota Fiscal -->
                         <div class="form-group">
                             <label>Nota Fiscal *</label>
-                            <input type="text" formControlName="notaFiscal" required />
+                            <input type="text" formControlName="notaFiscal" />
+                            <small class="error" *ngIf="campoInvalido('notaFiscal')">
+                                Somente números.
+                            </small>
                         </div>
 
+                        <!-- Data Compra -->
                         <div class="form-group">
                             <label>Data da Compra *</label>
-                            <input type="date" formControlName="dataCompra" required />
+                            <input type="date" formControlName="dataCompra" />
+                            <small class="error" *ngIf="campoInvalido('dataCompra')">
+                                Data inválida.
+                            </small>
                         </div>
 
+                        <!-- Tipo Defeito -->
                         <div class="form-group">
                             <label>Tipo de Defeito *</label>
-                            <select formControlName="tipoDefeito" required>
+                            <select formControlName="tipoDefeito">
                                 <option value="">Selecione</option>
-                                <option value="tela">Tela quebrada</option>
-                                <option value="bateria">Problema na bateria</option>
-                                <option value="sistema">Sistema travando</option>
-                                <option value="outro">Outro</option>
+                                <option value="nao_liga">Não liga</option>
+                                <option value="tela_preta">Tela preta</option>
+                                <option value="bateria">Bateria descarregando rápido</option>
+                                <option value="botoes">Botões não funcionam</option>
+                                <option value="alto_falante">Ruído no alto-falante</option>
+                                <option value="sem_sinal">Sem sinal/Sem rede</option>
+                                <option value="tela_trincada">Tela trincada</option>
+                                <option value="molhado">Aparelho molhado</option>
+                                <option value="microfone">Microfone não funciona</option>
+                                <option value="superaquecimento">Superaquecimento</option>
                             </select>
+                            <small class="error" *ngIf="campoInvalido('tipoDefeito')">Selecione o defeito.</small>
                         </div>
 
+                        <!-- Descrição -->
                         <div class="form-group">
                             <label>Descrição *</label>
-                            <textarea rows="4" formControlName="descricao" required></textarea>
+                            <textarea rows="4" formControlName="descricao"></textarea>
+                            <small class="error" *ngIf="campoInvalido('descricao')">
+                                Descrição Obrigatoria.
+                            </small>
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="btn-enviar">Enviar</button>
+                            <button type="submit" class="btn-enviar" [disabled]="solicitacaoForm.invalid">
+                                Enviar
+                            </button>
                         </div>
                     </form>
-                </form>
+                </div>
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <app-modal [title]="modalTitle" [message]="modalMessage" [show]="showModal" color="azul" (close)="showModal=false">
+    </app-modal>
 </div>

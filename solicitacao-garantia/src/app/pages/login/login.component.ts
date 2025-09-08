@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { USERS } from '../../mocks/mock-users';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { validarEmail, validarSenha } from '../../helpers/validacoes';
 
 @Component({
   selector: 'app-login',
@@ -13,55 +14,62 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  hidePassword = signal(true);
-  loginForm;
+  esconderSenha = signal(true);
+  formularioLogin!: ReturnType<FormBuilder['group']>;
 
-  modalData = {
-    show: false,
-    title: '',
-    message: '',
-    color: 'blue' as 'blue' | 'red'
+  modal = {
+    visivel: false,
+    titulo: '',
+    mensagem: '',
+    cor: 'azul' as 'azul' | 'vermelho'
   };
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
+  constructor(private fb: FormBuilder, private router: Router) { }
+
+  ngOnInit() {
+    this.criarFormulario();
+  }
+
+  private criarFormulario() {
+    this.formularioLogin = this.fb.group({
+      email: ['', [Validators.required, validarEmail]],
+      senha: ['', [Validators.required, validarSenha]]
     });
   }
 
-  togglePassword() {
-    this.hidePassword.update(v => !v);
+  alternarSenha() {
+    this.esconderSenha.update(v => !v);
   }
 
-  openModal(title: string, message: string, color: 'blue' | 'red') {
-    this.modalData = { show: true, title, message, color };
+  abrirModal(titulo: string, mensagem: string, cor: 'azul' | 'vermelho') {
+    this.modal = { visivel: true, titulo, mensagem, cor };
   }
 
-  closeModal() {
-    this.modalData.show = false;
+  fecharModal() {
+    this.modal.visivel = false;
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      const { email, senha } = this.loginForm.value;
+  enviarLogin() {
+    const abrirErro = (mensagem: string) => this.abrirModal('Erro', mensagem, 'vermelho');
 
-      const user = USERS.find(
-        u => u.email === email && u.senha === senha
-      );
-
-      if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
-
-        setTimeout(() => {
-          this.closeModal();
-          this.router.navigate(['/home']);
-        }, 1500);
-      } else {
-        this.openModal('Erro', 'E-mail ou senha inválidos! Tente novamente.', 'red');
-      }
-    } else {
-      this.openModal('Erro', 'Preencha os campos corretamente.', 'red');
+    if (!this.formularioLogin.valid) {
+      abrirErro('Preencha os campos corretamente.');
+      return;
     }
+
+    const { email, senha } = this.formularioLogin.value;
+    const usuario = USERS.find(u => u.email === email && u.senha === senha);
+
+    if (!usuario) {
+      abrirErro('E-mail ou senha inválidos! Tente novamente.');
+      return;
+    }
+    localStorage.setItem('user', JSON.stringify(usuario));
+
+    setTimeout(() => {
+      this.fecharModal();
+      this.router.navigate(['/home']);
+    }, 1500);
   }
+
 }

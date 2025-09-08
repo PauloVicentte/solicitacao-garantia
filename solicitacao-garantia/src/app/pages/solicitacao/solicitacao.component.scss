@@ -1,7 +1,6 @@
 .solicitacao-container {
   display: flex;
   height: 100dvh;
-  background: #f3f4f6;
 }
 
 .solicitacao-content {
@@ -98,3 +97,44 @@ textarea {
   cursor: pointer;
 }
 .btn-enviar:hover { background: #2563eb; }
+
+.error {
+  color: #dc2626; /* vermelho */
+  font-size: 12px;
+}
+
+.info {
+  color: #6b7280; /* cinza */
+  font-size: 12px;
+}
+
+textarea {
+  resize: none; /* não permite expandir */
+}
+
+.btn-enviar:disabled {
+  background: #9ca3af; /* cinza */
+  cursor: not-allowed;
+}
+
+:root {
+  --text-color: #111827;
+  --label-color: #374151;
+}
+
+body.dark-mode {
+  --text-color: #f1f1f1;
+  --label-color: #e5e7eb;
+}
+
+.form-group label {
+  color: var(--label-color);
+}
+
+.form-group span {
+  color: var(--text-color);
+}
+
+.form-containerp {
+  color: var(--text-color);
+}

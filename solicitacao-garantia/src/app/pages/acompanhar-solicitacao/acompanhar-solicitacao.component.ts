@@ -1,65 +1,83 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
-import { HttpClient } from '@angular/common/http';
-
-interface Solicitacao {
-  id: string;
-  nome: string;
-  data: string;
-  status: 'Em análise' | 'Aprovado' | 'Negado';
-  cliente: {
-    nome: string;
-    cpf: string;
-    celular: string;
-  };
-}
+import { CamundaService } from '../../service/camunda.service';
+import { interval, Subscription } from 'rxjs';
+import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { criarMensagemDetalhes, formatarData, formatarStatus } from '../../helpers/solicitacao';
+import { Solicitacao } from '../../models/solicitacao.model';
 
 @Component({
   selector: 'app-acompanhar-solicitacao',
   standalone: true,
-  imports: [CommonModule, SidebarComponent],
+  imports: [CommonModule, SidebarComponent, ModalComponent],
   templateUrl: './acompanhar-solicitacao.component.html',
   styleUrls: ['./acompanhar-solicitacao.component.scss']
 })
-export class AcompanharSolicitacaoComponent {
+export class AcompanharSolicitacaoComponent implements OnInit, OnDestroy {
   solicitacoes: Solicitacao[] = [];
-  user = JSON.parse(localStorage.getItem('user') || 'null');
-  modalAberto: boolean = false;
-  clienteSelecionado: any = null;
+  user: any;
+  modal = { visivel: false, titulo: '', mensagem: '', cor: 'azul' as 'azul' | 'vermelho' };
 
-  constructor(private http: HttpClient) { }
+  private sub?: Subscription;
+
+  constructor(private camundaService: CamundaService) { }
 
   ngOnInit() {
+    if (typeof window === 'undefined') return;
+    this.user = JSON.parse(localStorage.getItem('user') || 'null');
+
     this.carregarSolicitacoes();
+    this.sub = interval(5000).subscribe(() => this.carregarSolicitacoes());
   }
 
-  carregarSolicitacoes() {
-    this.http.get<any[]>('/engine-rest/history/process-instance')
-      .subscribe(instances => {
-        instances.forEach(pi => {
-          this.http.get<any[]>(`/engine-rest/history/variable-instance?processInstanceId=${pi.id}&variableName=status`)
-            .subscribe(vars => {
-              const status = vars[0]?.value || 'Em análise';
-              this.solicitacoes.push({
-                id: pi.id,
-                nome: this.user.nome,
-                data: pi.startTime,
-                status,
-                cliente: { nome: '', cpf: '', celular: '' }
-              });
-            });
-        });
-      });
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
   }
 
-  verDetalhes(solicitacao: Solicitacao) {
-    this.clienteSelecionado = solicitacao.cliente;
-    this.modalAberto = true;
+  private carregarSolicitacoes() {
+    this.camundaService.getAllInstancesVariables().subscribe(results => {
+      this.solicitacoes = results
+        .map(r => this.processarSolicitacao(r))
+        .filter(s => s.cliente.cpf === this.user.cpf);
+    });
+  }
+
+  private processarSolicitacao(r: any): Solicitacao {
+    const vars = r.vars;
+    return {
+      id: r.id,
+      idSolicitacao: vars.idSolicitacao,
+      nome: vars.beneficioSolicitado?.nome || 'Sem nome',
+      data: formatarData(vars.infoSolicitacao?.dataSolicitacao),
+      status: formatarStatus(vars.infoSolicitacao?.status),
+      cliente: {
+        nome: vars.beneficioSolicitado?.nome || '',
+        cpf: vars.beneficioSolicitado?.cpf || '',
+        celular: vars.beneficioSolicitado?.celular || ''
+      },
+      detalhes: vars
+    };
+  }
+
+  mostrarDetalhes(solicitacao: Solicitacao) {
+    this.modal.titulo = `Detalhes da Solicitação ${solicitacao.idSolicitacao}`;
+    this.modal.mensagem = criarMensagemDetalhes(solicitacao);
+    this.modal.cor = 'azul';
+    this.modal.visivel = true;
+  }
+
+  deletarSolicitacao(solicitacao: Solicitacao) {
+    this.camundaService.deleteInstance(solicitacao.id).subscribe(() => {
+      this.solicitacoes = this.solicitacoes.filter(s => s.id !== solicitacao.id);
+      this.modal.titulo = 'Solicitação Deletada';
+      this.modal.mensagem = `A solicitação ${solicitacao.idSolicitacao} foi removida com sucesso.`;
+      this.modal.cor = 'vermelho';
+      this.modal.visivel = true;
+    });
   }
 
   fecharModal() {
-    this.modalAberto = false;
-    this.clienteSelecionado = null;
+    this.modal.visivel = false;
   }
 }

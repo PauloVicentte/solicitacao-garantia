@@ -6,7 +6,7 @@
 
   <ul class="menu">
     <li [routerLink]="['/home']">
-      <span class="icon" >🏠︎</span>
+      <span class="icon">🏠︎</span>
       <span class="text" *ngIf="isOpen">Home</span>
     </li>
     <li [routerLink]="['/solicitacao']">
@@ -20,15 +20,16 @@
     <li class="user">
       <span class="icon">👤</span>
       <span class="text" *ngIf="isOpen">
-        {{user.nome}} <br>
+        {{user.nome}}
+        <br>
         <small>Solicitante</small>
       </span>
     </li>
-    <li>
+    <li (click)="toggleDarkMode()">
       <span class="icon">🌗</span>
       <span class="text" *ngIf="isOpen">Modo Escuro</span>
     </li>
-    <li [routerLink]="['/login']">
+    <li (click)="logout()">
       <span class="icon">↪</span>
       <span class="text" *ngIf="isOpen">Sair</span>
     </li>

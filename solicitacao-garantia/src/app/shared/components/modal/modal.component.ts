@@ -11,9 +11,8 @@ import { CommonModule } from '@angular/common';
 export class ModalComponent {
   @Input() title: string = '';
   @Input() message: string = '';
-  @Input() color: 'red' | 'blue' = 'blue';
+  @Input() color: 'vermelho' | 'azul' = 'azul';
   @Input() show: boolean = false;
-
   @Output() close = new EventEmitter<void>();
 
   onClose() {

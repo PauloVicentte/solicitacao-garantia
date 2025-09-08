@@ -12,7 +12,7 @@
 }
 
 .login-illustration img {
-  max-width: 400px;
+  max-width: 90%;
   width: 100%;
 }
 
@@ -31,8 +31,7 @@
 }
 
 .login-header img.logo {
-  width: 100px;
-  margin: 0 auto 1rem;
+  width: 90px;
 }
 
 .login-header h1 {
@@ -73,17 +72,13 @@
   transition: border 0.2s;
 }
 
-.form-group input:focus {
-  border-color: #2563eb;
-}
-
 .password-wrapper {
   position: relative;
 }
 
 .toggle-password {
   position: absolute;
-  right: 10px;
+  right: 5px;
   top: 6px;
   background: none;
   border: none;
@@ -92,8 +87,6 @@
 }
 
 .btn-login {
-  width: 100%;
-  margin-top: 0;
   padding: 0.7rem;
   background: #2563eb;
   color: white;
@@ -102,22 +95,4 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
-}
-
-.btn-login:hover {
-  background: #1e40af;
-}
-
-.forgot-password {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-}
-
-.forgot-password a {
-  color: #2563eb;
-  text-decoration: none;
-}
-
-.forgot-password a:hover {
-  text-decoration: underline;
 }

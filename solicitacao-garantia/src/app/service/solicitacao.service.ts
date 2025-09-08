@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DadosCliente } from '../models/cliente.model';
 import { DadosAparelho } from '../models/aparelho.model';
 import { Observable } from 'rxjs';
 
@@ -9,7 +8,6 @@ import { Observable } from 'rxjs';
 })
 export class SolicitacaoService {
   private readonly url = '/engine-rest/process-definition/key/';
-
   constructor(private http: HttpClient) { }
 
   enviarSolicitacao(user: any, aparelho: DadosAparelho): Observable<any> {
@@ -20,7 +18,7 @@ export class SolicitacaoService {
             nome: user.nome,
             cpf: user.cpf,
             dataNascimento: user.dataNascimento,
-            celular: user.celular?.substring(2),
+            celular: user.celular,
             infoAparelho: {
               marca: aparelho.marca,
               modelo: aparelho.modelo,

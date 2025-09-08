@@ -1,13 +1,13 @@
-<div class="acompanhamento-solicitacao">
-  <app-sidebar></app-sidebar>
+<div class="layout" [class.sidebar-collapsed]="!sidebar.isOpen">
+  <div class="acompanhamento-solicitacao">
+    <app-sidebar #sidebar></app-sidebar>
 
-  <section class="acompanhament-content">
-    <div class="welcome">
-      <h2>Suas Solicitações</h2>
-    </div>
+    <section class="acompanhament-content">
+      <div class="welcome">
+        <h2>Suas Solicitações</h2>
+      </div>
 
-    <table>
-      <thead>
+      <table>
         <tr>
           <th>ID</th>
           <th>Nome do Solicitante</th>
@@ -15,36 +15,31 @@
           <th>Status</th>
           <th>Ações</th>
         </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let s of solicitacoes">
-          <td>{{ s.id }}</td>
-          <td>{{ s.nome }}</td>
-          <td>{{ s.data }}</td>
-          <td>
-            <span class="status" [ngClass]="{
+        <tbody>
+          <tr *ngFor="let s of solicitacoes">
+            <td>{{ s.idSolicitacao }}</td>
+            <td>{{ s.nome }}</td>
+            <td>{{ s.data }}</td>
+            <td>
+              <span class="status" [ngClass]="{
               'amarelo': s.status === 'Em análise',
               'verde': s.status === 'Aprovado',
-              'vermelho': s.status === 'Negado'
-            }">
-              {{ s.status }}
-            </span>
-          </td>
-          <td>
-            <button (click)="verDetalhes(s)">👁</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+              'vermelho': s.status === 'Negado'}">
+                {{ s.status }}
+              </span>
+            </td>
+            <td class="acoes">
+              <button (click)="mostrarDetalhes(s)">🔍</button>
+              <button *ngIf="s.status === 'Aprovado' || s.status === 'Negado'"
+                (click)="deletarSolicitacao(s)">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-  <div class="modal" *ngIf="modalAberto">
-    <div class="modal-content">
-      <h3>Dados do Cliente</h3>
-      <p>Nome: {{ clienteSelecionado?.nome }}</p>
-      <p>CPF: {{ clienteSelecionado?.cpf }}</p>
-      <p>Celular: {{ clienteSelecionado?.celular }}</p>
-      <button (click)="fecharModal()">Fechar</button>
-    </div>
+    <app-modal [title]="modal.titulo" [message]="modal.mensagem" [color]="modal.cor" [show]="modal.visivel"
+      (close)="fecharModal()">
+    </app-modal>
   </div>
 </div>

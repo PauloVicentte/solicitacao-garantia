@@ -9,8 +9,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  background: #f9f9f9;
+  padding: 24px;
 }
 .welcome h2 {
   background: #1e3a8a;
@@ -19,11 +18,6 @@
   border-radius: 16px 16px 0 0;
   margin: 0;
   text-align: center;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
 }
 
 th, td {
@@ -67,4 +61,18 @@ th, td {
   background: white;
   padding: 2rem;
   border-radius: 0.5rem;
+}
+
+.acoes button {
+  margin-right: 0.5rem; 
+  cursor: pointer;
+  font-size: 1.2rem;
+  background: transparent;
+  border: none;
+}
+.acoes button:last-child {
+  margin-right: 0;
+}
+.acoes button:hover {
+  transform: scale(1.1);
 }
