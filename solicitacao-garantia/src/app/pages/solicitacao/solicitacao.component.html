@@ -1,107 +1,117 @@
 <div class="layout" [class.sidebar-collapsed]="!sidebar.isOpen">
-    <div class="solicitacao-container">
-        <app-sidebar #sidebar></app-sidebar>
-        <div class="solicitacao-content">
-            <div class="panel">
-                <div class="welcome">
-                    <h2>Solicitação de Suporte</h2>
-                </div>
-                <div class="form-container">
-                    <p class="subtitle">Preencha os campos para Solicitação de Garantia</p>
-                    <hr />
-                    <form class="support-form" [formGroup]="solicitacaoForm" (ngSubmit)="enviarSolicitacao()">
-                        <!-- Dados do usuário -->
-                        <div class="form-group"> <label>Nome</label> <span id="nome">{{ user.nome }}</span> </div>
-                        <div class="form-group"> <label>CPF</label> <span id="cpf">{{ user.cpf }}</span> </div>
-                        <div class="form-group"> <label>Data de Nascimento</label> <span id="nascimento">{{
-                                user.dataNascimento }}</span> </div>
-                        <div class="form-group"> <label>Celular</label> <span id="celular">{{ user.celular }}</span>
-                        </div>
+  <div class="solicitacao-container">
+    <app-sidebar #sidebar></app-sidebar>
 
-                        <!-- Marca -->
-                        <div class="form-group">
-                            <label>Marca *</label>
-                            <select formControlName="marca" (change)="atualizarModelos()">
-                                <option value="">Selecione</option>
-                                <option value="samsung">Samsung</option>
-                                <option value="lg">LG</option>
-                                <option value="apple">Apple</option>
-                            </select>
-                            <small class="error" *ngIf="campoInvalido('marca')">Selecione a marca.</small>
-                        </div>
-
-                        <!-- Modelo -->
-                        <div class="form-group">
-                            <label>Modelo *</label>
-                            <select formControlName="modelo" [disabled]="modelosDisponiveis.length === 0">
-                                <option value="">Selecione</option>
-                                <option *ngFor="let m of modelosDisponiveis" [value]="m">{{ m }}</option>
-                            </select>
-                            <small class="info" *ngIf="modelosDisponiveis.length === 0">
-                                Selecione uma marca primeiro
-                            </small>
-                            <small class="error" *ngIf="campoInvalido('modelo') && modelosDisponiveis.length > 0">
-                                Selecione o modelo.
-                            </small>
-                        </div>
-
-                        <!-- Nota Fiscal -->
-                        <div class="form-group">
-                            <label>Nota Fiscal *</label>
-                            <input type="text" formControlName="notaFiscal" />
-                            <small class="error" *ngIf="campoInvalido('notaFiscal')">
-                                Somente números.
-                            </small>
-                        </div>
-
-                        <!-- Data Compra -->
-                        <div class="form-group">
-                            <label>Data da Compra *</label>
-                            <input type="date" formControlName="dataCompra" />
-                            <small class="error" *ngIf="campoInvalido('dataCompra')">
-                                Data inválida.
-                            </small>
-                        </div>
-
-                        <!-- Tipo Defeito -->
-                        <div class="form-group">
-                            <label>Tipo de Defeito *</label>
-                            <select formControlName="tipoDefeito">
-                                <option value="">Selecione</option>
-                                <option value="nao_liga">Não liga</option>
-                                <option value="tela_preta">Tela preta</option>
-                                <option value="bateria">Bateria descarregando rápido</option>
-                                <option value="botoes">Botões não funcionam</option>
-                                <option value="alto_falante">Ruído no alto-falante</option>
-                                <option value="sem_sinal">Sem sinal/Sem rede</option>
-                                <option value="tela_trincada">Tela trincada</option>
-                                <option value="molhado">Aparelho molhado</option>
-                                <option value="microfone">Microfone não funciona</option>
-                                <option value="superaquecimento">Superaquecimento</option>
-                            </select>
-                            <small class="error" *ngIf="campoInvalido('tipoDefeito')">Selecione o defeito.</small>
-                        </div>
-
-                        <!-- Descrição -->
-                        <div class="form-group">
-                            <label>Descrição *</label>
-                            <textarea rows="4" formControlName="descricao"></textarea>
-                            <small class="error" *ngIf="campoInvalido('descricao')">
-                                Descrição Obrigatoria.
-                            </small>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn-enviar" [disabled]="solicitacaoForm.invalid">
-                                Enviar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <div class="solicitacao-content">
+      <div class="panel">
+        <div class="welcome">
+          <h2>Solicitação de Suporte</h2>
         </div>
+
+        <div class="form-container">
+          <p class="subtitle">Preencha os campos para Solicitação de Garantia</p>
+          <hr />
+          <form class="support-form" [formGroup]="solicitacaoForm" (ngSubmit)="enviarSolicitacao()">
+
+            <!-- Dados do usuário -->
+            <div class="form-group">
+              <label>Nome</label>
+              <span id="nome">{{ user()?.nome }}</span>
+            </div>
+            <div class="form-group">
+              <label>CPF</label>
+              <span>{{ user()?.cpf }}</span>
+            </div>
+            <div class="form-group">
+              <label>Data de Nascimento</label>
+              <span>{{ user()?.dataNascimento | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="form-group">
+              <label>Celular</label>
+              <span>{{ user()?.celular }}</span>
+            </div>
+
+            <!-- Marca -->
+            <div class="form-group">
+              <mat-form-field appearance="outline">
+                <mat-label>Marca *</mat-label>
+                <mat-select formControlName="marca" (selectionChange)="atualizarModelos()">
+                  <mat-option value="">Selecione</mat-option>
+                  <mat-option value="samsung">Samsung</mat-option>
+                  <mat-option value="lg">LG</mat-option>
+                  <mat-option value="apple">Apple</mat-option>
+                </mat-select>
+                <mat-error *ngIf="campoInvalido('marca')">Selecione a marca.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Modelo -->
+            <div class="form-group">
+              <mat-form-field appearance="outline">
+                <mat-label>Modelo *</mat-label>
+                <mat-select formControlName="modelo" [disabled]="modelosDisponiveis.length === 0">
+                  <mat-option value="">Selecione</mat-option>
+                  <mat-option *ngFor="let m of modelosDisponiveis" [value]="m">{{ m }}</mat-option>
+                </mat-select>
+                <mat-hint *ngIf="modelosDisponiveis.length === 0">Selecione uma marca primeiro</mat-hint>
+                <mat-error *ngIf="campoInvalido('modelo') && modelosDisponiveis.length > 0">
+                  Selecione o modelo.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Nota Fiscal -->
+            <div class="form-group">
+              <label>Nota Fiscal *</label>
+              <input matInput type="text" formControlName="notaFiscal" />
+              <small class="error" *ngIf="campoInvalido('notaFiscal')">Somente números.</small>
+            </div>
+
+            <!-- Data Compra -->
+            <div class="form-group">
+              <label>Data da Compra *</label>
+              <input matInput type="date" formControlName="dataCompra" />
+              <small class="error" *ngIf="campoInvalido('dataCompra')">Data inválida.</small>
+            </div>
+
+            <!-- Tipo Defeito -->
+            <div class="form-group">
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo de Defeito *</mat-label>
+                <mat-select formControlName="tipoDefeito">
+                  <mat-option value="">Selecione</mat-option>
+                  <mat-option value="nao_liga">Não liga</mat-option>
+                  <mat-option value="tela_preta">Tela preta</mat-option>
+                  <mat-option value="bateria">Bateria descarregando rápido</mat-option>
+                  <mat-option value="botoes">Botões não funcionam</mat-option>
+                  <mat-option value="alto_falante">Ruído no alto-falante</mat-option>
+                  <mat-option value="sem_sinal">Sem sinal/Sem rede</mat-option>
+                  <mat-option value="tela_trincada">Tela trincada</mat-option>
+                  <mat-option value="molhado">Aparelho molhado</mat-option>
+                  <mat-option value="microfone">Microfone não funciona</mat-option>
+                  <mat-option value="superaquecimento">Superaquecimento</mat-option>
+                </mat-select>
+                <mat-error *ngIf="campoInvalido('tipoDefeito')">Selecione o defeito.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Descrição -->
+            <div class="form-group">
+              <label>Descrição *</label>
+              <textarea rows="4" formControlName="descricao"></textarea>
+              <small class="error" *ngIf="campoInvalido('descricao')">Descrição obrigatória.</small>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-enviar" [disabled]="solicitacaoForm.invalid">Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    <!-- Modal -->
-    <app-modal [title]="modalTitle" [message]="modalMessage" [show]="showModal" color="azul" (close)="showModal=false">
-    </app-modal>
+  </div>
+
+  <!-- Modal -->
+  <app-modal [title]="modalTitle" [message]="modalMessage" [show]="showModal" color="azul" (close)="showModal=false">
+  </app-modal>
 </div>

@@ -1,5 +1,15 @@
-<div [class.closed]="!isOpen" class="sidebar">
-  <div class="toggle-btn" (click)="toggleSidebar()">
+<header class="mobile-header" *ngIf="isMobile">
+  <div class="hamburger" (click)="toggleSidebar()" [class.active]="isOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <h1>Solicitação de Garantia</h1>
+</header>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" [class.closed]="!isOpen" [class.mobile-open]="isOpen && isMobile">
+  <div class="toggle-btn" (click)="toggleSidebar()" *ngIf="!isMobile">
     <span *ngIf="isOpen">&#8592;</span>
     <span *ngIf="!isOpen">&#8594;</span>
   </div>
@@ -7,31 +17,32 @@
   <ul class="menu">
     <li [routerLink]="['/home']">
       <span class="icon">🏠︎</span>
-      <span class="text" *ngIf="isOpen">Home</span>
+      <span class="text" *ngIf="isOpen || isMobile">Home</span>
     </li>
     <li [routerLink]="['/solicitacao']">
       <span class="icon">✚</span>
-      <span class="text" *ngIf="isOpen">Solicitar Garantia</span>
+      <span class="text" *ngIf="isOpen || isMobile">Solicitar Garantia</span>
     </li>
     <li [routerLink]="['/acompanhar-solicitacao']">
       <span class="icon">🖊️</span>
-      <span class="text" *ngIf="isOpen">Suas Solicitações</span>
+      <span class="text" *ngIf="isOpen || isMobile">Suas Solicitações</span>
     </li>
     <li class="user">
       <span class="icon">👤</span>
-      <span class="text" *ngIf="isOpen">
-        {{user.nome}}
-        <br>
+      <span class="text" *ngIf="isOpen || isMobile">
+        {{user()?.nome}} <br />
         <small>Solicitante</small>
       </span>
     </li>
     <li (click)="toggleDarkMode()">
       <span class="icon">🌗</span>
-      <span class="text" *ngIf="isOpen">Modo Escuro</span>
+      <span class="text" *ngIf="isOpen || isMobile">Modo Escuro</span>
     </li>
     <li (click)="logout()">
       <span class="icon">↪</span>
-      <span class="text" *ngIf="isOpen">Sair</span>
+      <span class="text" *ngIf="isOpen || isMobile">Sair</span>
     </li>
   </ul>
-</div>
+</nav>
+
+<div class="overlay" *ngIf="isMobile && isOpen" (click)="toggleSidebar()"></div>

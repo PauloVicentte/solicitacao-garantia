@@ -1,52 +1,59 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener, computed } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../service/auth.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  isOpen = true;
+  isMobile: boolean = false;
+  isOpen: boolean = false;
   darkMode = false;
-  user = JSON.parse(localStorage.getItem('user') || 'null');
+  user = computed(() => this.authService.user$());
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) {
+    this.checkScreenWidth();
+  }
 
   ngOnInit() {
-    // Carregar preferência de Dark Mode
-    if (typeof window !== 'undefined' && localStorage.getItem('darkMode') === 'true') {
-      this.darkMode = true;
-      document.body.classList.add('dark-mode');
+    this.checkMobile();
+    window.addEventListener('resize', () => this.checkMobile());
+  }
+
+  @HostListener('window:resize')
+  checkScreenWidth() {
+    this.isMobile = window.innerWidth <= 768;
+    if (this.isMobile) {
+      this.isOpen = false;
+    } else {
+      this.isOpen = true;
     }
   }
 
+  checkMobile(): void {
+  this.isMobile = window.innerWidth <= 768;
+  if (!this.isMobile) {
+    this.isOpen = true;
+  }
+}
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
 
   logout() {
-    localStorage.removeItem('user');
-    // Redireciona e substitui toda a navegação anterior
-    this.router.navigateByUrl('/login', { replaceUrl: true }).then(() => {
-      // opcional: força recarregar a página
-      window.location.href = '/login';
-    });
+    this.authService.logout();
+    this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 
   toggleDarkMode() {
     this.darkMode = !this.darkMode;
-    if (this.darkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('darkMode', 'true'); // salva preferência
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.removeItem('darkMode');
-    }
+    document.body.classList.toggle('dark-mode', this.darkMode);
+    localStorage.setItem('darkMode', String(this.darkMode));
   }
 }

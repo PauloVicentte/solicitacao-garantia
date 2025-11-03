@@ -1,6 +1,9 @@
 .login {
   display: flex;
   height: 100vh;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .login-illustration {
@@ -8,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f9fafb;
+  background: #f1f1f1;
 }
 
 .login-illustration img {
@@ -70,6 +73,7 @@
   border-radius: 8px;
   outline: none;
   transition: border 0.2s;
+  max-width: 93%;
 }
 
 .password-wrapper {
@@ -95,4 +99,73 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
+}
+
+@media (max-width: 768px) {
+  .login {
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 1.5rem;
+    justify-content: center;
+    background-color: #ccc;
+
+    .login-illustration {
+      display: none !important;
+    }
+
+    .login-form-wrapper {
+      width: 100%;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ccc;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .login-header img.logo {
+      width: 70px;
+    }
+
+    .login-header h1 {
+      font-size: 1.6rem;
+    }
+
+    .login-header p {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+@media (min-width: 769px) {
+  .login-illustration {
+    display: flex !important;
+  }
+}
+
+html,
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .login-box {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
 }

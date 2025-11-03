@@ -5,12 +5,12 @@
     <div class="home-content">
       <div class="panel">
         <div class="welcome">
-          <h2>Bem-vindo(a) {{user.nome}}!</h2>
+          <h2>Bem-vindo(a) {{ user()?.nome }}!</h2>
         </div>
 
         <div class="buttons">
-          <button class="btn-home" [routerLink]="['/solicitacao']">Solicitar Garantia</button>
-          <button class="btn-home" [routerLink]="['/acompanhar-solicitacao']">Suas Solicitações</button>
+          <button class="btn-home" routerLink="/solicitacao">Solicitar Garantia</button>
+          <button class="btn-home" routerLink="/acompanhar-solicitacao">Suas Solicitações</button>
         </div>
       </div>
     </div>

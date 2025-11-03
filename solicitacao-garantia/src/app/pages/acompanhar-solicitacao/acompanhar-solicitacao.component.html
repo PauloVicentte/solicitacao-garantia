@@ -7,39 +7,66 @@
         <h2>Suas Solicitações</h2>
       </div>
 
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>Nome do Solicitante</th>
-          <th>Data da Solicitação</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-        <tbody>
-          <tr *ngFor="let s of solicitacoes">
-            <td>{{ s.idSolicitacao }}</td>
-            <td>{{ s.nome }}</td>
-            <td>{{ s.data }}</td>
-            <td>
-              <span class="status" [ngClass]="{
+      <div class="table-desktop">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome do Solicitante</th>
+              <th>Data da Solicitação</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of solicitacoes">
+              <td>{{ s.idSolicitacao }}</td>
+              <td>{{ s.nome }}</td>
+              <td>{{ s.data }}</td>
+              <td>
+                <span class="status" [ngClass]="{
+                  'amarelo': s.status === 'Em análise',
+                  'verde': s.status === 'Aprovado',
+                  'vermelho': s.status === 'Negado'}">
+                  {{ s.status }}
+                </span>
+              </td>
+              <td class="acoes">
+                <button (click)="mostrarDetalhes(s)">🔍 Ver Detalhes</button>
+                <button *ngIf="s.status === 'Aprovado' || s.status === 'Negado'"
+                  (click)="deletarSolicitacao(s)">🗑️ Deletar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!--MOBILE-->
+      <div class="list-mobile">
+        <div class="list-item" *ngFor="let s of solicitacoes">
+          <div class="item-header">
+            <span>ID: {{ s.idSolicitacao }}</span>
+            <span class="status" [ngClass]="{
               'amarelo': s.status === 'Em análise',
               'verde': s.status === 'Aprovado',
               'vermelho': s.status === 'Negado'}">
-                {{ s.status }}
-              </span>
-            </td>
-            <td class="acoes">
-              <button (click)="mostrarDetalhes(s)">🔍</button>
-              <button *ngIf="s.status === 'Aprovado' || s.status === 'Negado'"
-                (click)="deletarSolicitacao(s)">🗑️</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+              {{ s.status }}
+            </span>
+          </div>
+          <div class="item-actions">
+            <button (click)="mostrarDetalhes(s)">🔍 Ver Detalhes</button>
+            <button *ngIf="s.status === 'Aprovado' || s.status === 'Negado'" (click)="deletarSolicitacao(s)">🗑️
+              Deletar</button>
+          </div>
+        </div>
 
-    <app-modal [title]="modal.titulo" [message]="modal.mensagem" [color]="modal.cor" [show]="modal.visivel"
-      (close)="fecharModal()">
-    </app-modal>
+      </div>
+
+      <!--MODAL-->
+      <app-modal [title]="modal.titulo" [message]="modal.mensagem" [color]="modal.cor" [show]="modal.visivel"
+        (close)="fecharModal()">
+      </app-modal>
+
+    </section>
   </div>
 </div>

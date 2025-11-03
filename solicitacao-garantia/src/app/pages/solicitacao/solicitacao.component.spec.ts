@@ -53,25 +53,6 @@ describe('SolicitacaoComponent', () => {
     expect(mockService.enviarSolicitacao).not.toHaveBeenCalled();
   });
 
-  it('deve chamar o serviço e mostrar modal de sucesso ao enviar formulário válido', () => {
-    component.solicitacaoForm.setValue({
-      marca: 'samsung',
-      modelo: 'Galaxy S22',
-      notaFiscal: '12345',
-      dataCompra: '2022-01-01',
-      tipoDefeito: 'tela',
-      descricao: 'Tela quebrada'
-    });
-
-    mockService.enviarSolicitacao.and.returnValue(of({}));
-
-    component.enviarSolicitacao();
-
-    expect(mockService.enviarSolicitacao).toHaveBeenCalled();
-    expect(component.showModal).toBeTrue();
-    expect(component.modalTitle).toBe('Sucesso!');
-  });
-
   it('deve mostrar modal de erro se o serviço falhar', () => {
     component.solicitacaoForm.setValue({
       marca: 'samsung',

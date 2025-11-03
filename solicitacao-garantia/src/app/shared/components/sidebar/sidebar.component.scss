@@ -1,12 +1,13 @@
 .sidebar {
-  margin: 10px; 
+  margin: 10px;
   border-radius: 20px;
-  background-color: #ffffff; 
+  background-color: #ffffff;
   height: 100%;
   border-right: 1px solid #e5e7eb;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  transition: all 0.3s ease;
 
   &.closed {
     width: 72px;
@@ -44,7 +45,6 @@
   ul.menu {
     list-style: none;
     padding: 12px 0;
-    margin: 0;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -57,6 +57,7 @@
       cursor: pointer;
       border-radius: 8px;
       padding: 0 12px;
+      transition: background 0.2s ease;
     }
 
     li:hover {
@@ -78,21 +79,122 @@
       margin-top: auto;
     }
 
-    .user{
+    .user {
       background-color: #8baaff;
     }
   }
 }
 
+.hamburger {
+  display: none;
+  position: relative;
+  width: 28px;
+  height: 20px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  z-index: 3002;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg);
+  position: absolute;
+  top: 9px;
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg);
+  position: absolute;
+  top: 9px;
+}
+
+.mobile-header {
+  display: none;
+}
+
 @media (max-width: 768px) {
-  app-sidebar {
-    position: relative; /* volta ao fluxo normal */
+  .mobile-header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 56px;
+    background-color: #1e3a8a;
+    color: white;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 16px;
+    z-index: 3003;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
-  .solicitacao-content {
-    margin-left: 0; /* ocupa largura toda */
-    padding: 12px;
+  .mobile-header h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0 12px;
+  }
+
+  .mobile-header .hamburger {
+    display: flex;
   }
 }
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 3000;
+    animation: fadeIn 0.3s ease;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -240px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+    transition: left 0.3s ease;
+    z-index: 3001;
+    width: 240px;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .sidebar.mobile-open {
+    left: 0;
+    animation: slideIn 0.3s ease;
+  }
+
+  ul.menu li {
+    height: 56px;
+  }
+
+  ul.menu {
+    margin-top: 30%;
+  }
+}
+

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,5 +12,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  user = JSON.parse(localStorage.getItem('user') || 'null');
+  user = computed(() => this.authService.user$());
+
+  constructor(private readonly authService: AuthService) {}
 }

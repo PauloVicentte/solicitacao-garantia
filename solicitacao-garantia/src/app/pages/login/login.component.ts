@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { USERS } from '../../mocks/mock-users';
+import { AuthService, LoginRequest } from '../../service/auth.service';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { validarEmail, validarSenha } from '../../helpers/validacoes';
 
@@ -16,15 +16,9 @@ import { validarEmail, validarSenha } from '../../helpers/validacoes';
 export class LoginComponent {
   esconderSenha = signal(true);
   formularioLogin!: ReturnType<FormBuilder['group']>;
+  modal = { visivel: false, titulo: '', mensagem: '', cor: 'azul' as 'azul' | 'vermelho' };
 
-  modal = {
-    visivel: false,
-    titulo: '',
-    mensagem: '',
-    cor: 'azul' as 'azul' | 'vermelho'
-  };
-
-  constructor(private fb: FormBuilder, private router: Router) { }
+  constructor(private readonly fb: FormBuilder, private readonly router: Router, private readonly authService: AuthService) {}
 
   ngOnInit() {
     this.criarFormulario();
@@ -50,26 +44,18 @@ export class LoginComponent {
   }
 
   enviarLogin() {
-    const abrirErro = (mensagem: string) => this.abrirModal('Erro', mensagem, 'vermelho');
+    const abrirErro = (msg: string) => this.abrirModal('Erro', msg, 'vermelho');
 
     if (!this.formularioLogin.valid) {
       abrirErro('Preencha os campos corretamente.');
       return;
     }
 
-    const { email, senha } = this.formularioLogin.value;
-    const usuario = USERS.find(u => u.email === email && u.senha === senha);
+    const { email, senha } = this.formularioLogin.value as LoginRequest;
 
-    if (!usuario) {
-      abrirErro('E-mail ou senha inválidos! Tente novamente.');
-      return;
-    }
-    localStorage.setItem('user', JSON.stringify(usuario));
-
-    setTimeout(() => {
-      this.fecharModal();
-      this.router.navigate(['/home']);
-    }, 1500);
+    this.authService.login({ email, senha }).subscribe({
+      next: () => this.router.navigate(['/home']),
+      error: () => abrirErro('E-mail ou senha inválidos!')
+    });
   }
-
 }
